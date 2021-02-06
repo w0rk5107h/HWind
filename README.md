@@ -21,3 +21,11 @@ After this `exploit.py`, `exploit.exe`, `listener.py` and `listener.exe` will be
 
 `exploit.py` or `exploit.exe` needs to be executed on the victim machine.  
 `listener.py` or `listener.exe` needs to be executed on the attacker machine.
+
+## Commands
+1. `shell`: This will open a powershell over the HWind shell.
+2. `image`: Click an image of the victim and send it to attacker.
+3. `audio`: Record the victim's audio and send it to the attacker.
+4. `screenshot`: Take a screenshot of the victim's machine and send to attacker.
+
+**More commands comming soon.**
