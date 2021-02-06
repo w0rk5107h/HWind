@@ -46,7 +46,7 @@ if __name__ == '__main__':
     f.close()
     # making exe
     if os.name == 'nt':
-        os.system('pyinstaller --onefile exploit.py')
+        os.system('pyinstaller --onefile -w exploit.py')
         os.system('del exploit.spec')
         os.system('echo Y | rmdir /S __pycache__')
         os.system('echo Y | rmdir /S build')
