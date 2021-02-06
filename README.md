@@ -17,7 +17,7 @@ cd HWind
 pip install -r requirements.txt
 python generate.py
 ```
-** After this `exploit.py`, `exploit.exe`, `listener.py` and `listener.exe` will be generated. ***
+After this `exploit.py`, `exploit.exe`, `listener.py` and `listener.exe` will be generated. 
 
 `exploit.py` or `exploit.exe` needs to be executed on the victim machine.  
 `listener.py` or `listener.exe` needs to be executed on the attacker machine.
