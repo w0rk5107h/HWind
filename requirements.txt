@@ -3,3 +3,4 @@ scipy
 pyautogui
 sounddevice
 pillow
+pyinstaller
